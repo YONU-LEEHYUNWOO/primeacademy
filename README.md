@@ -1,92 +1,122 @@
-이 프로젝트는 [`EasyNext`](https://github.com/easynext/easynext)를 사용해 생성된 [Next.js](https://nextjs.org) 프로젝트입니다.
+# 프라임 수학학원 랜딩페이지
 
-## Getting Started
+프라임 수학학원의 공식 랜딩페이지 프로젝트입니다. Next.js 15와 TailwindCSS를 사용하여 구축된 반응형 웹사이트입니다.
 
-개발 서버를 실행합니다.<br/>
-환경에 따른 명령어를 사용해주세요.
+## 📋 프로젝트 개요
+
+학부모들이 학원의 강점, 교육 철학, 성과를 신뢰감 있게 확인하고 온라인 방문 상담 예약으로 전환하도록 유도하는 목적의 랜딩페이지입니다.
+
+## 🚀 주요 기능
+
+- **홈페이지**: 메인 비주얼과 학원 소개
+- **학원 소개** (`/about`): 교육 철학 및 커리큘럼 소개
+- **성과 및 통계** (`/results`): 객관적인 성과 데이터 시각화
+- **강사진 소개** (`/teachers`): 전문 강사진 프로필 및 상세 모달
+- **차별점 소개** (`/difference`): 타 학원 대비 비교
+- **오시는 길** (`/location`): 위치 정보 및 교통편 안내
+- **상담 예약** (`/reservation`): 온라인 상담 예약 폼
+
+## 🛠️ 기술 스택
+
+- **Framework**: Next.js 15 (App Router)
+- **언어**: TypeScript
+- **스타일링**: TailwindCSS
+- **UI 컴포넌트**: shadcn-ui
+- **폼 처리**: React Hook Form + Zod
+- **아이콘**: Lucide React
+- **상태 관리**: Zustand, React Query
+
+## 📦 설치 및 실행
+
+### 필수 요구사항
+
+- Node.js 18 이상
+- npm 또는 yarn
+
+### 설치
+
+```bash
+npm install
+```
+
+### 개발 서버 실행
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 결과를 확인할 수 있습니다.
+브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 확인할 수 있습니다.
 
-`app/page.tsx` 파일을 수정하여 페이지를 편집할 수 있습니다. 파일을 수정하면 자동으로 페이지가 업데이트됩니다.
+### 빌드
 
-## 기본 포함 라이브러리
-
-- [Next.js](https://nextjs.org)
-- [React](https://react.dev)
-- [Tailwind CSS](https://tailwindcss.com)
-- [TypeScript](https://www.typescriptlang.org)
-- [ESLint](https://eslint.org)
-- [Prettier](https://prettier.io)
-- [Shadcn UI](https://ui.shadcn.com)
-- [Lucide Icon](https://lucide.dev)
-- [date-fns](https://date-fns.org)
-- [react-use](https://github.com/streamich/react-use)
-- [es-toolkit](https://github.com/toss/es-toolkit)
-- [Zod](https://zod.dev)
-- [React Query](https://tanstack.com/query/latest)
-- [React Hook Form](https://react-hook-form.com)
-- [TS Pattern](https://github.com/gvergnaud/ts-pattern)
-
-## 사용 가능한 명령어
-
-한글버전 사용
-
-```sh
-easynext lang ko
+```bash
+npm run build
 ```
 
-최신버전으로 업데이트
+### 프로덕션 실행
 
-```sh
-npm i -g @easynext/cli@latest
-# or
-yarn add -g @easynext/cli@latest
-# or
-pnpm add -g @easynext/cli@latest
+```bash
+npm start
 ```
 
-Supabase 설정
+## 📁 프로젝트 구조
 
-```sh
-easynext supabase
+```
+academy_homepage/
+├── docs/                    # 프로젝트 문서
+│   ├── prd.md               # 제품 요구사항 문서
+│   ├── design.md            # UI/UX 디자인 가이드
+│   ├── ia.md                # 정보구조도
+│   └── usecases.md          # 유스케이스 문서
+├── src/
+│   ├── app/                 # Next.js App Router 페이지
+│   │   ├── about/          # 학원 소개 페이지
+│   │   ├── results/        # 성과 및 통계 페이지
+│   │   ├── teachers/       # 강사진 소개 페이지
+│   │   ├── difference/     # 차별점 소개 페이지
+│   │   ├── location/       # 오시는 길 페이지
+│   │   ├── reservation/    # 상담 예약 페이지
+│   │   └── page.tsx        # 홈페이지
+│   ├── components/         # React 컴포넌트
+│   │   ├── home/           # 홈페이지 섹션 컴포넌트
+│   │   ├── ui/             # shadcn-ui 컴포넌트
+│   │   ├── Header.tsx      # 헤더 컴포넌트
+│   │   └── Footer.tsx      # 푸터 컴포넌트
+│   ├── hooks/              # 커스텀 훅
+│   └── lib/                # 유틸리티 함수
+└── public/                 # 정적 파일
 ```
 
-Next-Auth 설정
+## 🎨 디자인 시스템
 
-```sh
-easynext auth
+- **주요 색상**: Primary `#6fcf1b` (연두색)
+- **디자인 철학**: 깔끔하고 전문적인 Modern UI
+- **참고 서비스**: 네이버 (Naver) 스타일
 
-# ID,PW 로그인
-easynext auth idpw
-# 카카오 로그인
-easynext auth kakao
-```
+## 📝 주요 특징
 
-유용한 서비스 연동
+- ✅ 반응형 디자인 (모바일, 태블릿, 데스크톱 대응)
+- ✅ 접근성 고려 (WCAG 2.1 AA 준수)
+- ✅ SEO 최적화
+- ✅ 타입 안정성 (TypeScript)
+- ✅ 폼 유효성 검사 (Zod)
 
-```sh
-# Google Analytics
-easynext gtag
+## 🤝 기여 방법
 
-# Microsoft Clarity
-easynext clarity
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-# ChannelIO
-easynext channelio
+## 📄 라이선스
 
-# Sentry
-easynext sentry
+이 프로젝트는 비공개 프로젝트입니다.
 
-# Google Adsense
-easynext adsense
-```
+## 📞 문의
+
+프로젝트 관련 문의사항이 있으시면 이슈를 생성해주세요.
+
+---
+
+Made with ❤️ using Next.js

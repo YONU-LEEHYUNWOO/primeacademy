@@ -22,10 +22,27 @@ const config = {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
+          100: '#e6f7d5',
+          500: '#6fcf1b',
+          700: '#5ab213',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
+          500: '#56b893',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+          500: '#c5e86c',
+        },
+        neutral: {
+          900: '#1a1a1a',
+          600: '#6b7280',
+          200: '#e5e7eb',
+        },
+        error: {
+          500: '#e63946',
         },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
@@ -34,10 +51,6 @@ const config = {
         muted: {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
         },
         popover: {
           DEFAULT: 'hsl(var(--popover))',
