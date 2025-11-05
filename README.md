@@ -2,6 +2,12 @@
 
 프라임 수학학원의 공식 랜딩페이지 프로젝트입니다. Next.js 15와 TailwindCSS를 사용하여 구축된 반응형 웹사이트입니다.
 
+## 🌐 배포 링크
+
+**라이브 사이트**: [https://academy-homepage.vercel.app/](https://academy-homepage.vercel.app/)
+
+Vercel을 통해 배포된 프로덕션 사이트입니다.
+
 ## 📋 프로젝트 개요
 
 학부모들이 학원의 강점, 교육 철학, 성과를 신뢰감 있게 확인하고 온라인 방문 상담 예약으로 전환하도록 유도하는 목적의 랜딩페이지입니다.
@@ -59,6 +65,18 @@ npm run build
 npm start
 ```
 
+## 🚢 배포
+
+이 프로젝트는 [Vercel](https://vercel.com)을 통해 배포되었습니다.
+
+### 배포 방법
+
+1. Vercel 계정에 GitHub 저장소 연결
+2. 자동 배포 설정 (GitHub push 시 자동 배포)
+3. 환경 변수 설정 (필요 시)
+
+배포된 사이트: [https://academy-homepage.vercel.app/](https://academy-homepage.vercel.app/)
+
 ## 📁 프로젝트 구조
 
 ```
@@ -113,10 +131,15 @@ academy_homepage/
 
 이 프로젝트는 비공개 프로젝트입니다.
 
+## 🔗 관련 링크
+
+- **라이브 사이트**: [https://academy-homepage.vercel.app/](https://academy-homepage.vercel.app/)
+- **GitHub 저장소**: [https://github.com/YONU-LEEHYUNWOO/primeacademy](https://github.com/YONU-LEEHYUNWOO/primeacademy)
+
 ## 📞 문의
 
 프로젝트 관련 문의사항이 있으시면 이슈를 생성해주세요.
 
 ---
 
-Made with ❤️ using Next.js
+Made with ❤️ using Next.js & Vercel
