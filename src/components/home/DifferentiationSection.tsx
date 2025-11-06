@@ -1,12 +1,19 @@
 'use client';
 
 import { CheckCircle2, BookOpen, Users, BarChart3 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useInView } from 'framer-motion';
+import { useRef } from 'react';
 
 /**
  * 차별점 소개 섹션 컴포넌트
  * 프라임 수학학원만의 독특한 커리큘럼과 관리 시스템을 소개하는 섹션
+ * framer-motion을 사용한 애니메이션 적용
  */
 export function DifferentiationSection() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-100px' });
+
   const differentiators = [
     {
       icon: BookOpen,
@@ -38,32 +45,71 @@ export function DifferentiationSection() {
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
+
   return (
-    <section className="py-20 md:py-32 bg-white">
+    <section ref={ref} className="py-20 md:py-32 bg-white">
       <div className="container mx-auto px-4">
         {/* 헤더 */}
-        <div className="text-center mb-16">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
             프라임 수학학원의 차별점
           </h2>
           <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
             단순한 학원이 아닌, 학습 성과를 체계적으로 관리하는 전문 교육 기관
           </p>
-        </div>
+        </motion.div>
 
         {/* 차별점 카드 그리드 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+        >
           {differentiators.map((item, index) => {
             const Icon = item.icon;
             return (
-              <div
+              <motion.div
                 key={index}
                 className="bg-white rounded-2xl p-8 border border-neutral-200 hover:shadow-lg transition-shadow"
+                variants={cardVariants}
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
               >
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-primary-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <motion.div
+                    className="w-12 h-12 bg-primary-500 rounded-lg flex items-center justify-center flex-shrink-0"
+                    whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
+                    transition={{ duration: 0.5 }}
+                  >
                     <Icon className="h-6 w-6 text-white" />
-                  </div>
+                  </motion.div>
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold text-neutral-900 mb-3">
                       {item.title}
@@ -73,19 +119,26 @@ export function DifferentiationSection() {
                     </p>
                     <ul className="space-y-2">
                       {item.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-center text-sm text-neutral-600">
+                        <motion.li
+                          key={idx}
+                          className="flex items-center text-sm text-neutral-600"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+                          transition={{ delay: index * 0.15 + idx * 0.1 + 0.3 }}
+                        >
                           <CheckCircle2 className="h-4 w-4 text-primary-500 mr-2 flex-shrink-0" />
                           {feature}
-                        </li>
+                        </motion.li>
                       ))}
                     </ul>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
 }
+

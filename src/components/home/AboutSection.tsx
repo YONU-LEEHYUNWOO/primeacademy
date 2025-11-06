@@ -2,12 +2,19 @@
 
 import Image from 'next/image';
 import { BookOpen, Target, Users } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useInView } from 'framer-motion';
+import { useRef } from 'react';
 
 /**
  * 학원 소개 섹션 컴포넌트
  * 학원의 비전, 교육 철학, 지도 방식을 소개하는 섹션
+ * framer-motion을 사용한 애니메이션 적용
  */
 export function AboutSection() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-100px' });
+
   const features = [
     {
       icon: BookOpen,
@@ -26,30 +33,80 @@ export function AboutSection() {
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
+
   return (
-    <section className="py-20 md:py-32 bg-white">
+    <section ref={ref} className="py-20 md:py-32 bg-white">
       <div className="container mx-auto px-4">
         {/* 헤더 */}
-        <div className="text-center mb-16">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
             프라임 수학학원의 교육 철학
           </h2>
           <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
             단순한 문제 풀이가 아닌, 수학적 사고력과 문제 해결 능력을 기르는 교육을 지향합니다
           </p>
-        </div>
+        </motion.div>
 
         {/* 메인 콘텐츠 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
-          <div className="relative h-[400px] rounded-2xl overflow-hidden">
+          <motion.div
+            className="relative h-[400px] rounded-2xl overflow-hidden"
+            initial={{ opacity: 0, x: -50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          >
             <Image
               src="https://picsum.photos/800/600"
               alt="학원 교실 환경"
               fill
               className="object-cover"
             />
-          </div>
-          <div className="space-y-6">
+          </motion.div>
+          <motion.div
+            className="space-y-6"
+            initial={{ opacity: 0, x: 50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          >
             <h3 className="text-2xl font-bold text-neutral-900">
               우리는 믿습니다
             </h3>
@@ -63,32 +120,44 @@ export function AboutSection() {
               기르는 것을 목표로 합니다. 이를 통해 학생들이 스스로 문제를 해결할 수
               있는 힘을 키워갑니다.
             </p>
-          </div>
+          </motion.div>
         </div>
 
         {/* 특징 카드 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+        >
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <div
+              <motion.div
                 key={index}
                 className="bg-primary-100 rounded-2xl p-8 border border-primary-200 hover:shadow-lg transition-shadow"
+                variants={cardVariants}
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
               >
-                <div className="w-12 h-12 bg-primary-500 rounded-lg flex items-center justify-center mb-4">
+                <motion.div
+                  className="w-12 h-12 bg-primary-500 rounded-lg flex items-center justify-center mb-4"
+                  whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
+                  transition={{ duration: 0.5 }}
+                >
                   <Icon className="h-6 w-6 text-white" />
-                </div>
+                </motion.div>
                 <h4 className="text-xl font-semibold text-neutral-900 mb-3">
                   {feature.title}
                 </h4>
                 <p className="text-neutral-600 leading-relaxed">
                   {feature.description}
                 </p>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
 }
+
