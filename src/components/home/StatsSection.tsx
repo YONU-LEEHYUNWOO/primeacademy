@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { useEffect, useState } from 'react';
+import { useI18n } from '@/hooks/useI18n';
 
 /**
  * 숫자 카운트업 애니메이션 컴포넌트
@@ -39,6 +40,7 @@ function CountUp({ end, duration = 2, suffix = '', isDecimal = false }: { end: n
  * framer-motion을 사용한 애니메이션 적용
  */
 export function StatsSection() {
+  const { t } = useI18n();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -47,8 +49,8 @@ export function StatsSection() {
       icon: TrendingUp,
       value: 85,
       suffix: '%',
-      label: '성적 향상률',
-      description: '평균 성적 향상률',
+      label: t.stats_improvement,
+      description: t.stats_improvement_desc,
       color: 'text-primary-500',
       bgColor: 'bg-primary-100',
     },
@@ -56,8 +58,8 @@ export function StatsSection() {
       icon: Award,
       value: 92,
       suffix: '%',
-      label: '합격률',
-      description: '목표 학교 합격률',
+      label: t.stats_pass_rate,
+      description: t.stats_pass_rate_desc,
       color: 'text-secondary-500',
       bgColor: 'bg-secondary-500/10',
     },
@@ -65,8 +67,8 @@ export function StatsSection() {
       icon: Users,
       value: 450,
       suffix: '+',
-      label: '누적 학생',
-      description: '지금까지 교육한 학생 수',
+      label: t.stats_students,
+      description: t.stats_students_desc,
       color: 'text-accent-500',
       bgColor: 'bg-accent-500/10',
     },
@@ -74,8 +76,8 @@ export function StatsSection() {
       icon: Target,
       value: 4.5,
       suffix: '',
-      label: '평균 성적',
-      description: '내신 평균 성적',
+      label: t.stats_average,
+      description: t.stats_average_desc,
       color: 'text-primary-700',
       bgColor: 'bg-primary-200',
       isDecimal: true,
@@ -116,10 +118,10 @@ export function StatsSection() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
-            객관적인 성과로 증명합니다
+            {t.stats_title}
           </h2>
           <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-            데이터로 확인하는 프라임 수학학원의 검증된 성과
+            {t.stats_subtitle}
           </p>
         </motion.div>
 
@@ -166,9 +168,12 @@ export function StatsSection() {
           transition={{ duration: 0.6, delay: 0.8 }}
         >
           <p className="text-neutral-600 max-w-3xl mx-auto leading-relaxed">
-            * 통계는 2024년 기준 실제 데이터를 반영한 수치입니다.
-            <br />
-            개인별 결과는 다를 수 있으며, 지속적인 관리를 통해 최적의 성과를 도출합니다.
+            {t.stats_disclaimer.split('\n').map((line, i) => (
+              <span key={i}>
+                {line}
+                {i < t.stats_disclaimer.split('\n').length - 1 && <br />}
+              </span>
+            ))}
           </p>
         </motion.div>
       </div>

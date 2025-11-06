@@ -2,10 +2,17 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Menu, X, GraduationCap } from 'lucide-react';
+import { Menu, X, GraduationCap, Globe } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useI18n } from '@/hooks/useI18n';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 /**
  * 헤더 컴포넌트
@@ -13,13 +20,14 @@ import { motion, AnimatePresence } from 'framer-motion';
  * framer-motion을 사용한 애니메이션 적용
  */
 export function Header() {
+    const { t, locale, changeLocale, isLoaded } = useI18n();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
 
     const menuItems = [
-        { href: '/results', label: '성과 및 통계' },
-        { href: '/teachers', label: '강사진' },
-        { href: '/difference', label: '차별점' },
+        { href: '/results', label: t.menu_results },
+        { href: '/teachers', label: t.menu_teachers },
+        { href: '/difference', label: t.menu_difference },
     ];
 
     // 스크롤 감지
@@ -57,7 +65,7 @@ export function Header() {
                         whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.2 }}
                     >
-                        프라임 수학학원
+                        {t.academy_name}
                     </motion.span>
                 </Link>
 
@@ -86,10 +94,49 @@ export function Header() {
 
                 {/* CTA 버튼 - 데스크톱 */}
                 <div className="hidden md:flex items-center space-x-4">
+                    {/* 언어 선택 드롭다운 */}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <motion.button
+                                className="flex items-center space-x-2 px-3 py-2 rounded-lg border border-neutral-200 hover:bg-neutral-50 transition-colors"
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 0.3 }}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <Globe className="h-4 w-4 text-neutral-600" />
+                                <span className="text-sm font-medium text-neutral-700">
+                                    {locale === 'ko' ? '한국어' : 'English'}
+                                </span>
+                            </motion.button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-32">
+                            <DropdownMenuItem
+                                onClick={() => changeLocale('ko')}
+                                className={cn(
+                                    'cursor-pointer',
+                                    locale === 'ko' && 'bg-primary-50 text-primary-700 font-semibold'
+                                )}
+                            >
+                                한국어
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => changeLocale('en')}
+                                className={cn(
+                                    'cursor-pointer',
+                                    locale === 'en' && 'bg-primary-50 text-primary-700 font-semibold'
+                                )}
+                            >
+                                English
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+
                     {[
-                        { href: '/about', label: '학원 소개' },
-                        { href: '/location', label: '오시는 길' },
-                        { href: '/reservation', label: '상담 예약하기' },
+                        { href: '/about', label: t.menu_about },
+                        { href: '/location', label: t.menu_location },
+                        { href: '/reservation', label: t.menu_reservation },
                     ].map((button, index) => (
                         <motion.div
                             key={button.href}
@@ -118,7 +165,7 @@ export function Header() {
                 <motion.button
                     className="md:hidden p-2"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    aria-label="메뉴 열기"
+                    aria-label={t.menu_open}
                     whileTap={{ scale: 0.9 }}
                 >
                     <AnimatePresence mode="wait">
@@ -158,6 +205,41 @@ export function Header() {
                         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                     >
                         <nav className="container mx-auto px-4 py-4 space-y-3">
+                            {/* 언어 선택 - 모바일 */}
+                            <div className="flex items-center justify-between py-2 border-b border-neutral-200 mb-3">
+                                <span className="text-sm font-medium text-neutral-700">언어 선택</span>
+                                <div className="flex items-center space-x-2">
+                                    <button
+                                        onClick={() => {
+                                            changeLocale('ko');
+                                            setIsMenuOpen(false);
+                                        }}
+                                        className={cn(
+                                            'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+                                            locale === 'ko'
+                                                ? 'bg-primary-500 text-white'
+                                                : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                                        )}
+                                    >
+                                        한국어
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            changeLocale('en');
+                                            setIsMenuOpen(false);
+                                        }}
+                                        className={cn(
+                                            'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+                                            locale === 'en'
+                                                ? 'bg-primary-500 text-white'
+                                                : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                                        )}
+                                    >
+                                        English
+                                    </button>
+                                </div>
+                            </div>
+
                             {menuItems.map((item, index) => (
                                 <motion.div
                                     key={item.href}
@@ -175,9 +257,9 @@ export function Header() {
                                 </motion.div>
                             ))}
                             {[
-                                { href: '/about', label: '학원 소개' },
-                                { href: '/location', label: '오시는 길' },
-                                { href: '/reservation', label: '상담 예약하기' },
+                                { href: '/about', label: t.menu_about },
+                                { href: '/location', label: t.menu_location },
+                                { href: '/reservation', label: t.menu_reservation },
                             ].map((button, index) => (
                                 <motion.div
                                     key={button.href}

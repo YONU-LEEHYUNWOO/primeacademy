@@ -28,32 +28,30 @@ import {
 import { CheckCircle2, Clock, Phone, Mail, AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { useI18n } from '@/hooks/useI18n';
 
 /**
  * 상담 예약 폼 스키마
  * 이름, 연락처, 상담 희망일, 문의내용을 검증
  */
-const reservationSchema = z.object({
-  name: z.string().min(2, '이름은 2자 이상 입력해주세요.').max(50, '이름은 50자 이하로 입력해주세요.'),
-  phone: z
-    .string()
-    .min(10, '연락처를 올바르게 입력해주세요.')
-    .regex(/^[0-9-]+$/, '연락처는 숫자와 하이픈(-)만 입력 가능합니다.'),
-  preferredDate: z.string().min(1, '상담 희망일을 선택해주세요.'),
-  preferredTime: z.string().min(1, '상담 희망 시간을 선택해주세요.'),
-  message: z.string().min(10, '문의내용을 10자 이상 입력해주세요.').max(500, '문의내용은 500자 이하로 입력해주세요.'),
-});
-
-type ReservationFormValues = z.infer<typeof reservationSchema>;
-
-/**
- * 상담 예약 페이지
- * 방문 상담 예약 폼을 통해 학원 상담을 신청하는 페이지
- */
 export default function ReservationPage() {
+  const { t } = useI18n();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
+
+  const reservationSchema = z.object({
+    name: z.string().min(2, t.validation_name_min).max(50, t.validation_name_max),
+    phone: z
+      .string()
+      .min(10, t.validation_phone_min)
+      .regex(/^[0-9-]+$/, t.validation_phone_format),
+    preferredDate: z.string().min(1, t.validation_date_required),
+    preferredTime: z.string().min(1, t.validation_time_required),
+    message: z.string().min(10, t.validation_message_min).max(500, t.validation_message_max),
+  });
+
+  type ReservationFormValues = z.infer<typeof reservationSchema>;
 
   const form = useForm<ReservationFormValues>({
     resolver: zodResolver(reservationSchema),
@@ -80,16 +78,16 @@ export default function ReservationPage() {
 
       // 성공 메시지 표시
       toast({
-        title: '상담 신청이 완료되었습니다',
-        description: '담당자가 연락드리겠습니다.',
+        title: t.toast_success_title,
+        description: t.toast_success_desc,
       });
 
       setIsSubmitted(true);
       form.reset();
     } catch (error) {
       toast({
-        title: '전송 실패',
-        description: '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+        title: t.toast_error_title,
+        description: t.toast_error_desc,
         variant: 'destructive',
       });
     } finally {
@@ -107,18 +105,21 @@ export default function ReservationPage() {
               <CheckCircle2 className="h-8 w-8 text-primary-500" />
             </div>
             <h2 className="text-2xl font-bold text-neutral-900 mb-4">
-              상담 신청이 완료되었습니다
+              {t.reservation_success_title}
             </h2>
             <p className="text-neutral-600 mb-6">
-              담당자가 입력하신 연락처로 연락드리겠습니다.
-              <br />
-              평일 오후 2시부터 10시까지 운영됩니다.
+              {t.reservation_success_desc.split('\n').map((line, i) => (
+                <span key={i}>
+                  {line}
+                  {i < t.reservation_success_desc.split('\n').length - 1 && <br />}
+                </span>
+              ))}
             </p>
             <Button
               onClick={() => setIsSubmitted(false)}
               className="bg-primary-500 hover:bg-primary-700 text-white"
             >
-              다시 작성하기
+              {t.reservation_reset}
             </Button>
           </Card>
         </main>
@@ -136,10 +137,10 @@ export default function ReservationPage() {
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-6">
-                상담 예약하기
+                {t.reservation_page_title}
               </h1>
               <p className="text-xl text-neutral-600 max-w-3xl mx-auto leading-relaxed">
-                프라임 수학학원에서 자녀에게 맞는 학습 상담을 받아보세요
+                {t.reservation_page_subtitle}
               </p>
             </div>
           </div>
@@ -158,10 +159,10 @@ export default function ReservationPage() {
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>이름 *</FormLabel>
+                          <FormLabel>{t.reservation_form_name}</FormLabel>
                           <FormControl>
                             <Input
-                              placeholder="이름을 입력해주세요"
+                              placeholder={t.reservation_form_name_placeholder}
                               {...field}
                               className="border-neutral-200 focus:border-primary-500"
                             />
@@ -177,17 +178,17 @@ export default function ReservationPage() {
                       name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>연락처 *</FormLabel>
+                          <FormLabel>{t.reservation_form_phone}</FormLabel>
                           <FormControl>
                             <Input
                               type="tel"
-                              placeholder="010-1234-5678"
+                              placeholder={t.reservation_form_phone_placeholder}
                               {...field}
                               className="border-neutral-200 focus:border-primary-500"
                             />
                           </FormControl>
                           <FormDescription>
-                            담당자가 연락드릴 수 있도록 정확한 번호를 입력해주세요.
+                            {t.reservation_form_phone_desc}
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
@@ -200,17 +201,17 @@ export default function ReservationPage() {
                       name="preferredDate"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>상담 희망일 *</FormLabel>
+                          <FormLabel>{t.reservation_form_date}</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
                               <SelectTrigger className="border-neutral-200 focus:border-primary-500">
-                                <SelectValue placeholder="희망일을 선택해주세요" />
+                                <SelectValue placeholder={t.reservation_form_date_placeholder} />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="weekday">평일 (월-금)</SelectItem>
-                              <SelectItem value="saturday">토요일</SelectItem>
-                              <SelectItem value="flexible">상관없음</SelectItem>
+                              <SelectItem value="weekday">{t.form_option_weekday}</SelectItem>
+                              <SelectItem value="saturday">{t.form_option_saturday}</SelectItem>
+                              <SelectItem value="flexible">{t.form_option_flexible}</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -224,18 +225,18 @@ export default function ReservationPage() {
                       name="preferredTime"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>상담 희망 시간 *</FormLabel>
+                          <FormLabel>{t.reservation_form_time}</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
                               <SelectTrigger className="border-neutral-200 focus:border-primary-500">
-                                <SelectValue placeholder="희망 시간을 선택해주세요" />
+                                <SelectValue placeholder={t.reservation_form_time_placeholder} />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="morning">오전 (10:00 - 12:00)</SelectItem>
-                              <SelectItem value="afternoon">오후 (14:00 - 17:00)</SelectItem>
-                              <SelectItem value="evening">저녁 (18:00 - 22:00)</SelectItem>
-                              <SelectItem value="flexible">상관없음</SelectItem>
+                              <SelectItem value="morning">{t.form_option_morning}</SelectItem>
+                              <SelectItem value="afternoon">{t.form_option_afternoon}</SelectItem>
+                              <SelectItem value="evening">{t.form_option_evening}</SelectItem>
+                              <SelectItem value="flexible">{t.form_option_flexible}</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -249,16 +250,16 @@ export default function ReservationPage() {
                       name="message"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>문의내용 *</FormLabel>
+                          <FormLabel>{t.reservation_form_message}</FormLabel>
                           <FormControl>
                             <Textarea
-                              placeholder="상담 받고 싶은 내용을 자세히 입력해주세요 (예: 자녀의 현재 수준, 목표, 특별한 요청사항 등)"
+                              placeholder={t.reservation_form_message_placeholder}
                               className="min-h-[120px] border-neutral-200 focus:border-primary-500"
                               {...field}
                             />
                           </FormControl>
                           <FormDescription>
-                            자세한 문의내용을 입력해주시면 더 정확한 상담을 받으실 수 있습니다.
+                            {t.reservation_form_message_desc}
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
@@ -270,10 +271,9 @@ export default function ReservationPage() {
                       <div className="flex items-start space-x-3">
                         <AlertCircle className="h-5 w-5 text-neutral-600 mt-0.5 flex-shrink-0" />
                         <div className="text-sm text-neutral-600">
-                          <p className="font-medium mb-1">개인정보 수집 및 이용 안내</p>
+                          <p className="font-medium mb-1">{t.reservation_privacy_title}</p>
                           <p>
-                            입력하신 정보는 상담 목적 외에는 사용되지 않으며, 상담 완료 후
-                            삭제됩니다.
+                            {t.reservation_privacy_text}
                           </p>
                         </div>
                       </div>
@@ -289,10 +289,10 @@ export default function ReservationPage() {
                       {isSubmitting ? (
                         <>
                           <Clock className="h-5 w-5 mr-2 animate-spin" />
-                          전송 중...
+                          {t.reservation_submitting}
                         </>
                       ) : (
-                        '상담 신청하기'
+                        t.reservation_submit
                       )}
                     </Button>
                   </form>

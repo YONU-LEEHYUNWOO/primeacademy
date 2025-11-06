@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { useI18n } from '@/hooks/useI18n';
 
 /**
  * 강사진 소개 섹션 컴포넌트
@@ -15,13 +16,14 @@ import { useRef } from 'react';
  * framer-motion을 사용한 애니메이션 적용
  */
 export function TeachersSection() {
+  const { t } = useI18n();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   const teachers = [
     {
       name: '김수학',
-      role: '수학 대표 강사',
+      role: t.teacher_role_main,
       education: '서울대학교 수학과 졸업',
       experience: '15년 경력',
       philosophy: '학생 개개인의 특성을 이해하고, 수학적 사고력을 키워가는 교육을 지향합니다.',
@@ -29,7 +31,7 @@ export function TeachersSection() {
     },
     {
       name: '이수학',
-      role: '고등 수학 전문',
+      role: t.teacher_role_high,
       education: '연세대학교 수학과 졸업',
       experience: '12년 경력',
       philosophy: '체계적인 문제 해결 방법을 통해 학생들이 스스로 문제를 해결할 수 있도록 합니다.',
@@ -37,7 +39,7 @@ export function TeachersSection() {
     },
     {
       name: '박수학',
-      role: '중등 수학 전문',
+      role: t.teacher_role_middle,
       education: '고려대학교 수학과 졸업',
       experience: '10년 경력',
       philosophy: '기초부터 탄탄히 다져 학생들이 수학에 자신감을 갖도록 돕습니다.',
@@ -79,10 +81,10 @@ export function TeachersSection() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
-            전문 강사진을 소개합니다
+            {t.teachers_title}
           </h2>
           <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-            풍부한 경력과 검증된 실력을 갖춘 전문 강사진이 책임지고 지도합니다
+            {t.teachers_subtitle}
           </p>
         </motion.div>
 
@@ -156,7 +158,7 @@ export function TeachersSection() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                강사진 더 보기
+                {t.teachers_more}
               </motion.span>
             </Link>
           </Button>

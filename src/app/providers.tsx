@@ -8,6 +8,8 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { ThemeProvider } from 'next-themes';
+import { useEffect } from 'react';
+import { useI18nStore } from '@/lib/i18n-store';
 
 function makeQueryClient() {
   return new QueryClient({
@@ -43,6 +45,80 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   //       suspend because React will throw away the client on the initial
   //       render if it suspends and there is no boundary
   const queryClient = getQueryClient();
+  const { isLoaded, initialize } = useI18nStore();
+
+  useEffect(() => {
+    // i18n 스토어 초기화
+    if (typeof window !== 'undefined' && !isLoaded) {
+      initialize();
+    }
+  }, [initialize, isLoaded]);
+
+  useEffect(() => {
+    // MetaMask 및 기타 브라우저 확장 프로그램 오류 필터링
+    const originalError = console.error;
+    const originalWarn = console.warn;
+
+    console.error = (...args: any[]) => {
+      const errorMessage = args.join(' ');
+      // MetaMask 관련 오류 무시
+      if (
+        errorMessage.includes('MetaMask') ||
+        errorMessage.includes('Failed to connect to MetaMask') ||
+        errorMessage.includes('chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn')
+      ) {
+        return;
+      }
+      originalError.apply(console, args);
+    };
+
+    console.warn = (...args: any[]) => {
+      const warnMessage = args.join(' ');
+      // MetaMask 관련 경고 무시
+      if (
+        warnMessage.includes('MetaMask') ||
+        warnMessage.includes('chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn')
+      ) {
+        return;
+      }
+      originalWarn.apply(console, args);
+    };
+
+    // 전역 오류 핸들러
+    const handleError = (event: ErrorEvent) => {
+      if (
+        event.message?.includes('MetaMask') ||
+        event.message?.includes('Failed to connect to MetaMask') ||
+        event.filename?.includes('chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn')
+      ) {
+        event.preventDefault();
+        return false;
+      }
+    };
+
+    // Promise rejection 핸들러
+    const handleRejection = (event: PromiseRejectionEvent) => {
+      const reason = event.reason?.toString() || '';
+      if (
+        reason.includes('MetaMask') ||
+        reason.includes('Failed to connect to MetaMask') ||
+        reason.includes('chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn')
+      ) {
+        event.preventDefault();
+        return false;
+      }
+    };
+
+    window.addEventListener('error', handleError);
+    window.addEventListener('unhandledrejection', handleRejection);
+
+    return () => {
+      console.error = originalError;
+      console.warn = originalWarn;
+      window.removeEventListener('error', handleError);
+      window.removeEventListener('unhandledrejection', handleRejection);
+    };
+  }, []);
 
   return (
     <ThemeProvider

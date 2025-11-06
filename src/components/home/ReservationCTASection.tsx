@@ -6,6 +6,7 @@ import { ArrowRight, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { useI18n } from '@/hooks/useI18n';
 
 /**
  * 상담 예약 CTA 섹션 컴포넌트
@@ -13,6 +14,7 @@ import { useRef } from 'react';
  * framer-motion을 사용한 애니메이션 적용
  */
 export function ReservationCTASection() {
+    const { t } = useI18n();
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -65,15 +67,18 @@ export function ReservationCTASection() {
                         className="text-3xl md:text-4xl font-bold mb-6"
                         variants={itemVariants}
                     >
-                        자녀에게 맞는 학습 상담을 받아보세요
+                        {t.cta_title}
                     </motion.h2>
                     <motion.p
                         className="text-lg md:text-xl mb-8 text-white/90 leading-relaxed"
                         variants={itemVariants}
                     >
-                        프라임 수학학원의 전문 상담사가 자녀의 학습 상황을 분석하고
-                        <br />
-                        최적의 학습 방법을 제안해드립니다
+                        {t.cta_description.split('\n').map((line, i) => (
+                            <span key={i}>
+                                {line}
+                                {i < t.cta_description.split('\n').length - 1 && <br />}
+                            </span>
+                        ))}
                     </motion.p>
                     <motion.div
                         className="flex flex-col sm:flex-row gap-4 justify-center"
@@ -90,7 +95,7 @@ export function ReservationCTASection() {
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
                                     >
-                                        상담 예약하기
+                                        {t.cta_reservation}
                                     </motion.span>
                                     <motion.div
                                         animate={{ x: [0, 4, 0] }}
@@ -116,7 +121,7 @@ export function ReservationCTASection() {
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
                                     >
-                                        오시는 길
+                                        {t.cta_location}
                                     </motion.span>
                                     <motion.div
                                         animate={{ x: [0, 4, 0] }}
@@ -139,7 +144,7 @@ export function ReservationCTASection() {
                         animate={isInView ? { opacity: 1 } : { opacity: 0 }}
                         transition={{ duration: 0.6, delay: 0.8 }}
                     >
-                        입력된 정보는 상담 목적 외 사용되지 않습니다.
+                        {t.footer_disclaimer}
                     </motion.p>
                 </motion.div>
             </div>

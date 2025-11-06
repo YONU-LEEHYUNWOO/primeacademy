@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useI18n } from '@/hooks/useI18n';
 
 /**
  * Hero 섹션 컴포넌트
@@ -12,6 +13,7 @@ import { motion } from 'framer-motion';
  * framer-motion을 사용한 세련된 애니메이션 적용
  */
 export function HeroSection() {
+    const { t } = useI18n();
     // 애니메이션 variants
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -120,13 +122,13 @@ export function HeroSection() {
                             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-neutral-900"
                             variants={itemVariants}
                         >
-                            성적 향상의 중심
+                            {t.hero_title}
                             <br />
                             <motion.span
                                 className="text-primary-700 inline-block"
                                 variants={itemVariants}
                             >
-                                프라임 수학학원
+                                {t.hero_subtitle}
                             </motion.span>
                         </motion.h1>
 
@@ -135,9 +137,12 @@ export function HeroSection() {
                             className="text-lg md:text-xl mb-10 text-neutral-600 max-w-2xl mx-auto leading-relaxed"
                             variants={itemVariants}
                         >
-                            데이터 기반 성과 공개와 검증된 강사진으로
-                            <br />
-                            자녀의 수학 실력을 한 단계 높여드립니다
+                            {t.hero_description.split('\n').map((line, i) => (
+                                <span key={i}>
+                                    {line}
+                                    {i < t.hero_description.split('\n').length - 1 && <br />}
+                                </span>
+                            ))}
                         </motion.p>
 
                         {/* 버튼 그룹 */}
@@ -156,7 +161,7 @@ export function HeroSection() {
                                     className="bg-primary-500 text-white hover:bg-primary-700 rounded-lg px-8 py-6 text-lg font-semibold shadow-lg shadow-primary-500/30 transition-all duration-300"
                                 >
                                     <Link href="/reservation" className="flex items-center gap-2">
-                                        <span>상담 예약하기</span>
+                                        <span>{t.hero_reservation}</span>
                                         <motion.div
                                             animate={{ x: [0, 4, 0] }}
                                             transition={{
@@ -182,7 +187,7 @@ export function HeroSection() {
                                     className="bg-white text-primary-700 hover:bg-primary-50 border-2 border-primary-500 rounded-lg px-8 py-6 text-lg font-semibold shadow-lg transition-all duration-300"
                                 >
                                     <Link href="/about" className="flex items-center gap-2">
-                                        <span>학원 소개</span>
+                                        <span>{t.hero_about}</span>
                                         <motion.div
                                             animate={{ x: [0, 4, 0] }}
                                             transition={{

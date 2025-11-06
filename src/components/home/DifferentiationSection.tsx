@@ -12,6 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { useI18n } from '@/hooks/useI18n';
 
 /**
  * 차별점 데이터 타입 정의
@@ -36,6 +37,7 @@ type Differentiator = {
  * 배너 형식의 카드 레이아웃
  */
 export function DifferentiationSection() {
+  const { t } = useI18n();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const [selectedItem, setSelectedItem] = useState<Differentiator | null>(null);
@@ -43,9 +45,8 @@ export function DifferentiationSection() {
   const differentiators: Differentiator[] = [
     {
       icon: BookOpen,
-      title: '맞춤형 커리큘럼',
-      description:
-        '학생별 수준과 목표에 맞춘 개인별 학습 계획을 수립하고, 단계별로 관리합니다.',
+      title: t.diff_custom_title,
+      description: t.diff_custom_desc,
       detailedDescription: [
         '각 학생의 현재 수준을 정확히 진단하여 개인별 학습 계획을 수립합니다.',
         '학생의 학습 스타일과 속도를 고려한 맞춤형 커리큘럼을 제공합니다.',
@@ -64,9 +65,8 @@ export function DifferentiationSection() {
     },
     {
       icon: Users,
-      title: '소규모 그룹 수업',
-      description:
-        '과목별로 소규모 그룹을 구성하여 집중도 높은 수업과 개별 관리를 동시에 실현합니다.',
+      title: t.diff_group_title,
+      description: t.diff_group_desc,
       detailedDescription: [
         '과목별로 5-8명의 소규모 그룹을 구성하여 집중도 높은 수업 환경을 제공합니다.',
         '소규모 그룹의 장점을 활용하여 개별 질의응답과 맞춤형 피드백이 가능합니다.',
@@ -85,9 +85,8 @@ export function DifferentiationSection() {
     },
     {
       icon: BarChart3,
-      title: '체계적인 학습 관리',
-      description:
-        '정기적인 평가와 피드백을 통해 학습 상태를 모니터링하고 지속적으로 개선합니다.',
+      title: t.diff_management_title,
+      description: t.diff_management_desc,
       detailedDescription: [
         '주간/월간 정기 평가를 통해 학생의 학습 상태를 지속적으로 모니터링합니다.',
         '평가 결과를 바탕으로 개별 피드백과 학습 계획 조정을 실시합니다.',
@@ -106,9 +105,8 @@ export function DifferentiationSection() {
     },
     {
       icon: CheckCircle2,
-      title: '검증된 학습 방법',
-      description:
-        '오랜 기간 검증된 학습 방법론을 바탕으로 체계적이고 효율적인 학습을 제공합니다.',
+      title: t.diff_method_title,
+      description: t.diff_method_desc,
       detailedDescription: [
         '수년간의 교육 경험을 바탕으로 검증된 학습 방법론을 적용합니다.',
         '최신 교육 트렌드와 입시 동향을 반영한 효율적인 학습 전략을 제공합니다.',
@@ -161,10 +159,10 @@ export function DifferentiationSection() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
-            프라임 수학학원의 차별점
+            {t.diff_title}
           </h2>
           <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-            단순한 학원이 아닌, 학습 성과를 체계적으로 관리하는 전문 교육 기관
+            {t.diff_subtitle}
           </p>
         </motion.div>
 
