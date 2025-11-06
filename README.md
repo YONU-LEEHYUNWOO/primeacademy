@@ -77,6 +77,19 @@ npm start
 1. Vercel 계정에 GitHub 저장소 연결
 2. 자동 배포 설정 (GitHub push 시 자동 배포)
 3. 환경 변수 설정 (필요 시)
+4. 빌드 설정 확인:
+   - Framework Preset: Next.js
+   - Build Command: `npm run build`
+   - Output Directory: `.next`
+   - Install Command: `npm install`
+
+### Vercel 설정
+
+프로젝트 루트의 `vercel.json` 파일에 배포 설정이 포함되어 있습니다:
+- 빌드 명령어: `npm run build`
+- 개발 명령어: `npm run dev`
+- 프레임워크: Next.js
+- 지역: 서울 (icn1)
 
 배포된 사이트: [https://academy-homepage.vercel.app/](https://academy-homepage.vercel.app/)
 
