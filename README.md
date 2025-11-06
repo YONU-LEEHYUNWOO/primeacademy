@@ -28,6 +28,7 @@ Vercel을 통해 배포된 프로덕션 사이트입니다.
 - **언어**: TypeScript
 - **스타일링**: TailwindCSS
 - **UI 컴포넌트**: shadcn-ui
+- **애니메이션**: Framer Motion
 - **폼 처리**: React Hook Form + Zod
 - **아이콘**: Lucide React
 - **상태 관리**: Zustand, React Query
@@ -110,6 +111,8 @@ academy_homepage/
 - **주요 색상**: Primary `#6fcf1b` (연두색)
 - **디자인 철학**: 깔끔하고 전문적인 Modern UI
 - **참고 서비스**: 네이버 (Naver) 스타일
+- **애니메이션**: Framer Motion을 활용한 부드러운 인터랙션
+- **레이아웃**: 가로형 배너 및 카드 기반 그리드 시스템
 
 ## 📝 주요 특징
 
@@ -118,6 +121,11 @@ academy_homepage/
 - ✅ SEO 최적화
 - ✅ 타입 안정성 (TypeScript)
 - ✅ 폼 유효성 검사 (Zod)
+- ✅ Framer Motion 기반 세련된 애니메이션
+- ✅ 스크롤 기반 인터랙티브 효과
+- ✅ 강사진 모달 다이얼로그 기능
+- ✅ 숫자 카운트업 애니메이션
+- ✅ 가로형 배너 레이아웃
 
 ## 🤝 기여 방법
 
@@ -136,10 +144,13 @@ academy_homepage/
 - **라이브 사이트**: [https://academy-homepage.vercel.app/](https://academy-homepage.vercel.app/)
 - **GitHub 저장소**: [https://github.com/YONU-LEEHYUNWOO/primeacademy](https://github.com/YONU-LEEHYUNWOO/primeacademy)
 
-## 📞 문의
+## ✨ 최근 업데이트
 
-프로젝트 관련 문의사항이 있으시면 이슈를 생성해주세요.
-
----
-
-Made with ❤️ using Next.js & Vercel
+### v1.1.0 (최신)
+- 🎨 차별점 섹션을 가로형 배너 레이아웃으로 변경
+- 🎯 헤더에 GraduationCap 아이콘 추가
+- 🎬 모든 섹션에 Framer Motion 애니메이션 적용
+- 📊 성과 통계 섹션에 숫자 카운트업 애니메이션 추가
+- 🖼️ 히어로 섹션 배경 이미지 디자인 개선
+- 📱 모바일 메뉴 슬라이드 애니메이션 개선
+- 🎭 강사진 모달 다이얼로그 기능 추가
