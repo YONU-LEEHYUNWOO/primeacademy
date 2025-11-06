@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { CheckCircle2, BookOpen, Users, BarChart3 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
@@ -9,6 +10,7 @@ import { useRef } from 'react';
  * 차별점 소개 섹션 컴포넌트
  * 프라임 수학학원만의 독특한 커리큘럼과 관리 시스템을 소개하는 섹션
  * framer-motion을 사용한 애니메이션 적용
+ * 배너 형식의 카드 레이아웃
  */
 export function DifferentiationSection() {
   const ref = useRef(null);
@@ -20,28 +22,40 @@ export function DifferentiationSection() {
       title: '맞춤형 커리큘럼',
       description:
         '학생별 수준과 목표에 맞춘 개인별 학습 계획을 수립하고, 단계별로 관리합니다.',
-      features: ['개인별 학습 진도 관리', '취약점 분석 및 보완', '목표별 맞춤 학습'],
+      image: 'https://picsum.photos/600/400?random=50',
+      bgGradient: 'bg-gradient-to-b from-blue-500 to-blue-900',
+      textColor: 'text-yellow-200',
+      titleColor: 'text-white',
     },
     {
       icon: Users,
       title: '소규모 그룹 수업',
       description:
         '과목별로 소규모 그룹을 구성하여 집중도 높은 수업과 개별 관리를 동시에 실현합니다.',
-      features: ['과목별 소규모 그룹', '집중도 높은 수업 환경', '개별 질의응답 가능'],
+      image: 'https://picsum.photos/600/400?random=51',
+      bgGradient: 'bg-gradient-to-br from-purple-600 to-purple-900',
+      textColor: 'text-white',
+      titleColor: 'text-white',
     },
     {
       icon: BarChart3,
       title: '체계적인 학습 관리',
       description:
         '정기적인 평가와 피드백을 통해 학습 상태를 모니터링하고 지속적으로 개선합니다.',
-      features: ['정기 평가 및 분석', '학부모 상담 제공', '학습 리포트 제공'],
+      image: 'https://picsum.photos/600/400?random=52',
+      bgGradient: 'bg-gradient-to-b from-emerald-500 to-emerald-800',
+      textColor: 'text-white',
+      titleColor: 'text-white',
     },
     {
       icon: CheckCircle2,
       title: '검증된 학습 방법',
       description:
         '오랜 기간 검증된 학습 방법론을 바탕으로 체계적이고 효율적인 학습을 제공합니다.',
-      features: ['검증된 학습 방법론', '효율적인 학습 전략', '지속적인 개선'],
+      image: 'https://picsum.photos/600/400?random=53',
+      bgGradient: 'bg-gradient-to-br from-orange-500 to-red-600',
+      textColor: 'text-white',
+      titleColor: 'text-white',
     },
   ];
 
@@ -56,7 +70,7 @@ export function DifferentiationSection() {
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    hidden: { opacity: 0, y: 50, scale: 0.95 },
     visible: {
       opacity: 1,
       y: 0,
@@ -86,52 +100,48 @@ export function DifferentiationSection() {
           </p>
         </motion.div>
 
-        {/* 차별점 카드 그리드 */}
+        {/* 차별점 배너 그리드 - 옆으로 긴 배너 형식 */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          className="space-y-6"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
           {differentiators.map((item, index) => {
             const Icon = item.icon;
+            const isEven = index % 2 === 0;
             return (
               <motion.div
                 key={index}
-                className="bg-white rounded-2xl p-8 border border-neutral-200 hover:shadow-lg transition-shadow"
+                className={`relative rounded-2xl overflow-hidden shadow-lg ${item.bgGradient} min-h-[300px] md:min-h-[350px] flex flex-col md:flex-row`}
                 variants={cardVariants}
-                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                whileHover={{ y: -3, transition: { duration: 0.2 } }}
               >
-                <div className="flex items-start space-x-4">
-                  <motion.div
-                    className="w-12 h-12 bg-primary-500 rounded-lg flex items-center justify-center flex-shrink-0"
-                    whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <Icon className="h-6 w-6 text-white" />
-                  </motion.div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-neutral-900 mb-3">
-                      {item.title}
-                    </h3>
-                    <p className="text-neutral-600 mb-4 leading-relaxed">
-                      {item.description}
-                    </p>
-                    <ul className="space-y-2">
-                      {item.features.map((feature, idx) => (
-                        <motion.li
-                          key={idx}
-                          className="flex items-center text-sm text-neutral-600"
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
-                          transition={{ delay: index * 0.15 + idx * 0.1 + 0.3 }}
-                        >
-                          <CheckCircle2 className="h-4 w-4 text-primary-500 mr-2 flex-shrink-0" />
-                          {feature}
-                        </motion.li>
-                      ))}
-                    </ul>
+                {/* 이미지 - 짝수는 왼쪽, 홀수는 오른쪽 */}
+                <div className={`relative w-full md:w-1/2 h-[250px] md:h-auto ${isEven ? 'md:order-1' : 'md:order-2'}`}>
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover"
+                  />
+                  <div className={`absolute inset-0 ${item.bgGradient} opacity-60`} />
+                  {/* 아이콘 오버레이 */}
+                  <div className="absolute top-6 right-6">
+                    <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                      <Icon className="h-8 w-8 text-white" />
+                    </div>
                   </div>
+                </div>
+
+                {/* 콘텐츠 */}
+                <div className={`flex-1 p-8 md:p-12 flex flex-col justify-center ${isEven ? 'md:order-2' : 'md:order-1'}`}>
+                  <h3 className={`text-2xl md:text-3xl font-bold mb-4 ${item.titleColor}`}>
+                    {item.title}
+                  </h3>
+                  <p className={`text-base md:text-lg leading-relaxed ${item.textColor} font-medium`}>
+                    {item.description}
+                  </p>
                 </div>
               </motion.div>
             );
